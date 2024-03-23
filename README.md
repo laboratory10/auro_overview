@@ -44,7 +44,7 @@ This project is made up of four distinct systems. When referred all together, th
     - The telemetry visualization application that receives data from the Base Station over serial and displays it
     - Developed in python
     <br><br>***Ground System screenshot***
-    <br><img src="./assets/ground_system_sample.PNG" width="700"><br>
+    <br><img src="./assets/ground_system_sample.png" width="700"><br>
     <br>
     
 4. The Launch Station
@@ -166,7 +166,7 @@ While testing only on the complete system has its advantages, it can also make i
 
 Below is a screenshot showing sample output from `/auro/test/end_to_end_test.py`. It looks like I have some issues to sort out before my next commit.
 <br><br>***Sample end-to-end test output***
-<br><img src="./assets/test_output_sample.PNG" width="700"><br>
+<br><img src="./assets/test_output_sample.png" width="700"><br>
 <br>
 
 
@@ -201,7 +201,7 @@ It is also important to note that the Ground System needs to be told what serial
 
 The ground station can be launched with a command similar to `python /auro/ground_system/ground_system.py`:
 <br><br>***Ground System screenshot***
-<br><img src="./assets/ground_system_sample.PNG" width="700"><br>
+<br><img src="./assets/ground_system_sample.png" width="700"><br>
 <br>
 
 ### Section 3.3: Telemetry Logging
@@ -209,7 +209,7 @@ The Ground System has a button along the bottom of the window that toggles groun
 
 Flight logs are generated onboard AURO when it is in flight mode. While the process to archive and play the log files is identical, it is more manual. The flight logs need to be manually pulled off the SD card and put in the `/auro/recorded_flight_data` directory. For playback to work correctly, the contents of the `enums.h` ***that was in use when the log was generated*** must be inserted into the start of the log file and saved.
 <br><br>***The Ground System in log playback mode***
-<br><img src="./assets/ground_system_playback_sample.PNG" width="700"><br>
+<br><img src="./assets/ground_system_playback_sample.png" width="700"><br>
 <br>
 
 ### Section 3.4: Ground Segment Testing
