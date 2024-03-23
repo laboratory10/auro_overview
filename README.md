@@ -20,7 +20,7 @@ This project is made up of four distinct systems. When referred all together, th
         - 3.7v 500mAh Lithium Ion Polymer Battery
         - Flight Computer: ATSAMD21G18 ARM Cortex M0 processor
         - Micro SD storage flight logger
-        - 915 MHz radio,
+        - 915 MHz radio
         - Accelerometer
         - Magnetometer
         - Gyroscope
