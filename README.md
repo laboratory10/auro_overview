@@ -127,9 +127,7 @@ Throughout AURO's FSW, you will find the following external header files include
 #### Section 2.2.3: FSW Modules and Tasks
 Inside of `auro/auro_flight/src`, the AURO FSW is structured into several modules. The term `module` will be used to refer to the sub-directories present within the src directory. Of the modules present, some have a special significance in that they may host their own `FSW Task`. A FSW Task is a thread of execution that is designed to serve a specific functionality. Many tasks are running concurrently and competing for processor capacity. It is the job of the RTOS scheduler to determine which task has the priority and will be given the processor. More information about a FreeRTOS task (which is one in the same as an AURO FSW Task) can be found in the <a href="https://www.freertos.org/about-RTOS.html">FreeRTOS Documentation</a>. The modules that have a task running are denoted with the '_' character at the start of their directory name. This visually separates them from modules without a FSW Task and pulls them to the top in most filesystem explorers.
 
-
 Within each FSW module, there can be various FSW source code files that makeup the functionality of that module. Files ending in `_task.c/h` contain the source code for FSW tasks and functions called by the task itself. Files ending in `_utils.c/h` contain utilities used across multiple files in a module but not used outside the module. Files ending in `_commands.c/h` contain handler functions associated with FSW commands. These are commands that can be issued by the operator on the ground and are received, parsed, and executed by AURO. Files ending in `_client.c/h` contain functions that are designed for use both internally and externally of the given module. For example, the Fault Protection Manager or `_fpm` module includes the file `fpm_client.c` which contains the function definition for `fpm_assert`. This function can be called by any module and any task to alert the `FPM` module that a serious issue has been encountered and a reset should be activated. As was done in the previous sentence, it would be correct to refer to the Fault Protection Manager Module as `fpm`, `FPM`, `_fpm`, or any other reasonable deviation.
-
 
 At the time this documentation was generated, AURO consists of the following FSW Modules:
  - **_FPM** - Fault Protection Manager - The highest priority FSW Task that detects and responds to anomalies
@@ -187,7 +185,6 @@ Code for the Launch Station can be found in `/auro/launch_station`. Its purpose 
 - report with LAUNCH level ETLs the launch station's actions
 
 For both the Base Station and Launch Station, transmission on the radio link is only allowed if AURO cedes transmission rights by initiating a Groundspeak session. AURO does this by transmitting a special packet to indicate some other system may transmit for a short time. The Ground System implements logic that deconflicts usage of the Groundspeak session between the Base Station and Launch Station by disabling user transmission of FSW commands for a short time.
-
 
 ### Section 3.2: Ground System (Telemetry Visualization)
 The Ground System consists of the python tkinter application that visualizes the AURO data that is being received. The main components of the interface are:
@@ -336,11 +333,3 @@ Section 2.3 covers many AURO-cetric testing concepts, some of which have implica
 When everything is integrated, AURO, the Base Station, and the Launch Station can be connected via USB to the development machine to compile and flash the image to the boards using the Arduino IDE. If changes were made to AURO code, the new FSW image must be exported to binaries in the Arduino IDE using the toolbar menu `Sketch->Export Compiled Binary` feature.
 
 Next, the Ground System can be launched with the terminal command `python /auro/ground_system/ground_system.py`. Look at telemetry streaming in from AURO and send FSW commands to prepare it for its journey skyward. Remember, a fully assembled Mission System isn't necessary to get a feel for the action as log files can be replayed in the Ground System with a terminal command such as `python /auro/ground_system/ground_system.py sample_filepath.log`.
-
-
-
-<div >
-    <img src="./assets/AURO_logo.svg" align="left" height="100">
-    <br><br><br>
-    <h1 align='bottom'>&nbsp;&nbsp;AURO: Flight Software</h1>
-</div>
