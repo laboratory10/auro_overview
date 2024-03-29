@@ -8,15 +8,15 @@
 
 ## Section 1: Project Overview
 
-Welcome to AURO! ***This repository is a public README for the private AURO repository which contains the full source code. If you would like full access to the AURO source code email laboratory0010@gmail.com.*** The <a href="https://github.com/laboratory10/auro">AURO</a> repository houses the Flight Software source code for an avionics platform that has a small form factor and can fit into a large model rocket kit. While the focus of this project is the Flight Software for the avionics, you will also find source code for ground support equipment, design documentation, and log files from flights.
+Welcome to AURO! ***This repository is a public README for the private AURO repository which contains the full source code. If you would like full access to the AURO source code email laboratory0010@gmail.com.*** The <a href="https://github.com/laboratory10/auro">AURO</a> repository houses the Flight Software source code for an avionics platform that has a small form factor and can fit into an amateur rocket kit. While the focus of this project is the Flight Software for the avionics, you will also find source code for ground support equipment, design documentation, and log files from flights.
 
-Before we go too far, I should cover my motivation for this project so many of the architecture decisions make more sense. I am interested in developing a system that allows me to challenge and showcase my capabilities as a Flight Software Engineer. While the term Embedded Software Engineer is used more broadly across different industries, I am using the term `Flight Software` (FSW) throughout to signal that the expectation for autonomy and fault tolerance of this code should be on par with design principles used in spaceflight applications.
+Before going further, I would like to cover my motivation for this project so many of the architecture decisions make more sense. I am interested in developing a system that allows me to challenge and showcase my capabilities as a Flight Software Engineer. While the term Embedded Software Engineer is used more broadly across different industries, I am using the term `Flight Software` (FSW) throughout to signal that the expectation for autonomy and fault tolerance of this code should be on par with design principles used in spaceflight applications.
 
 ### Section 1.1: Mission System Architecture
-This project is made up of four distinct systems. When referred all together, the term `Mission System` is used. At an individual system level, there is `AURO` or the `Flight System`, the `Launch Station`, the `Base Station`, and the `Ground System`. Sometimes, the final three are jointly referred to as the `Ground Segment`.
+This project is made up of four distinct systems. When referred to all together, the term `Mission System` is used. At an individual system level, there is `AURO` or the `Flight System`, the `Launch Station`, the `Base Station`, and the `Ground System`. Sometimes, the final three are jointly referred to as the `Ground Segment`.
 1. AURO (/auro/auro_flight/)
-    - The flight vehicle and where much of the development effort is focused. The 3D printed Avionics Bay that accompanines AURO can fit into 76mm diameter rocket kits.
-    - Hardware consists of:
+    - The flight vehicle and where much of the development effort is focused. The 3D printed Avionics Bay that accompanies AURO can fit into 76mm diameter rocket kits.
+    - The hardware consists of:
         - 3.7v 500mAh Lithium Ion Polymer Battery
         - Flight Computer: ATSAMD21G18 ARM Cortex M0 processor
         - Micro SD storage flight logger
@@ -26,18 +26,18 @@ This project is made up of four distinct systems. When referred all together, th
         - Gyroscope
         - Altimeter
         - GPS receiver
-    - Developed in C with some C++ to interface with board/sensor libraries
+    - Developed in C with some C++ to interface with board/sensor drivers
     - Uses the <a href="https://www.freertos.org/index.html">FreeRTOS</a> kernel to implement the Real-Time Operating System
-    <br><br>***The Integrated AURO system***
+    <br><br>***The integrated AURO system***
     <br><img src="./assets/AURO_complete.jpg" width="350">&nbsp;&nbsp;<img src="./assets/AURO_partially_disassembled.jpg" width="350"><br>
     <br>
 2. The Base Station (/auro/base_station/)
-    - A device that receives flight data from AURO and passes it along a serial interface for ground interaction
-    - Hardware consists of:
+    - A device that receives flight data from AURO and passes it along a serial interface to the ground system
+    - The hardware consists of:
         - ATSAMD21G18 ARM Cortex M0 processor
         - 915 MHz radio
     - Developed in C++
-    <br><br>***The Integrated Base Station***
+    <br><br>***The integrated Base Station***
     <br><img src="./assets/base_station_complete.jpg" width="700"><br>
     <br>
 3. The Ground System (/auro/ground_system/)
@@ -46,8 +46,8 @@ This project is made up of four distinct systems. When referred all together, th
     <br><br>***Ground System screenshot***
     <br><img src="./assets/ground_system_sample.png" width="700"><br>
     <br>
-    
-4. The Launch Station
+   
+4. The Launch Station (/auro/launch_station/)
     - A device that energizes the launch circuit when commanded to ignite the rocket motor
     - Hardware consists of:
         - 3.7v 500mAh Lithium Ion Polymer Battery
@@ -57,7 +57,7 @@ This project is made up of four distinct systems. When referred all together, th
         - Igniter cables
         - 9V battery
     - Developed in C++
-    <br><br>***The Integrated Launch Station***
+    <br><br>***The integrated Launch Station***
     <br><img src="./assets/launch_station_complete.jpg" width="700"><br>
     <br>
 
@@ -70,13 +70,13 @@ In this section, we delve into the architecture of the most important portion of
 
 The FreeRTOS (Real-Time Operating System) kernel serves as the foundation for AURO's multitasking capabilities, enabling efficient task scheduling and resource management. FreeRTOS was chosen because it is open-source, representative of more complex RTOS frameworks in use for spacecraft development, and has several ports available for processor architectures that are common on boards that fit the rocket form factor.
 
-The boards and sensors used for the avionics are commercially available and have board support packages and libraries tightly partnered with the Arduino IDE. For this reason, the Arduino IDE was used throughout development to manage board support packages, libraries, and compilation. While this made development easier, I was not interested in making a massive 'sketch' or sets of 'sketches' (sketch is an Arduino term and refers to a C++ adaptation in use with .ino files) that make use of many of the guardrails of the Arduino environment. I was interested in being confronted with realistic architectural and design challenges that a FSW team working on robotic spacecraft would be faced with and using too much of the C++ and Arduino utilities gave me less architectural control and challenge. For these reasons, while the Arduino IDE is used to compile the project and a small amount of C++ is used to interface with libraries, the only .ino/C++ file is simply in place as an entry point to the greater FSW environment which is entirely written in C.
+The boards and sensors used for the avionics are commercially available and have board support packages and drivers tightly partnered with the Arduino IDE. For this reason, the Arduino IDE was used throughout development to manage board support packages, drivers, libraries, and compilation. While this made development easier, I was not interested in making a massive 'sketch' or sets of 'sketches' (sketch is an Arduino term and refers to a C++ adaptation in use with .ino files) that make use of many of the guardrails of the Arduino environment. I was interested in being confronted with realistic architectural and design challenges that a FSW team working on robotic spacecraft would be faced with and using too much of the C++ and Arduino utilities gave me less architectural control and challenge. For these reasons, while the Arduino IDE is used to compile the project and a small amount of C++ is used to interface with drivers, the only .ino/C++ file is simply in place as an entry point to the greater FSW environment which is entirely written in C.
 
 ### Section 2.2: AURO's FSW Architecture
 #### Section 2.2.1: Arduino and the Impact on Directory Structure
 The AURO repository contains a directory for each of the 4 systems in the overall Mission System as well as other directories for Mission/Project level files. The AURO FSW lives in `auro/auro_flight/` and will be the focus of this section.
 
-Inside `auro/auro_flight/` are one file and two subdirectories. The file `auro/auro_flight/auro_flight.ino` is a special file required for the Arduino IDE to properly compile the FSW image. As discussed in Section 2.1, the Arduino IDE ***requires*** that all source code is either in or called from an `.ino` file or is in a directory named `src`. No other `.ino` files will be included for compilation. In addition, the `setup()` and `loop()` functions called by the main Arduino entry point must be present in a file ***with the same name*** as the project name (i.e. the project directory auro_flight must have a `auro_flight.ino` with a setup and loop function). In addition to this special file, the `auro/auro_flight/` directory also contains the `/auro/auro_flight/build/` directory which is home to the FSW image binaries generated by the Arduino IDE on compilation. Finally, the `auro/auro_flight/src/` directory contains all the FSW source code.
+Inside `auro/auro_flight/` are one file and two subdirectories. The file `auro/auro_flight/auro_flight.ino` is a special file required for the Arduino IDE to properly compile the FSW image. As discussed in Section 2.1, the Arduino IDE ***requires*** that all source code is either in or called from an `.ino` file or is in a directory named `src`. No other files will be included for compilation. In addition, the `setup()` and `loop()` functions called by the main Arduino entry point must be present in a file ***with the same name*** as the project name (i.e. the project directory auro_flight must have a `auro_flight.ino` with a setup and loop function). In addition to this special file, the `auro/auro_flight/` directory also contains the `/auro/auro_flight/build/` directory which is home to the FSW image binaries generated by the Arduino IDE on compilation. Finally, the `auro/auro_flight/src/` directory contains all the FSW source code.
 
 #### Section 2.2.2: Board Support Packages, Device Drivers, Libraries, and Includes
 In order for everything to work properly, the following board support packages and libraries must be installed via the Arduino IDE:
@@ -91,17 +91,17 @@ In order for everything to work properly, the following board support packages a
 - General Adafruit Sensors:
     - <a href="https://github.com/adafruit/Adafruit_Sensor">Adafruit Unified Sensor</a> by Adafruit
     - <a href="https://github.com/adafruit/Adafruit_BusIO">Adafruit BusIO</a> by Adafruit
--   IMU/Gryo and Magnetometer:
+- IMU/Gyro and Magnetometer:
     - <a href="https://github.com/adafruit/Adafruit_LIS3MDL">Adafruit_LIS3MDL</a> by Adafruit
     - <a href="https://github.com/adafruit/Adafruit_LSM6DS">Adafruit_LSM6DS</a> by Adafruit
 - Barometric Pressure Sensor:
     - <a href="https://github.com/adafruit/Adafruit_BMP3XX">Adafruit_BMP3XX</a> by Adafruit
--   GPS Sensor:
+- GPS Sensor:
     - <a href="https://github.com/adafruit/Adafruit_GPS">Adafruit_GPS</a> by Adafruit
 
 Throughout AURO's FSW, you will find the following external header files included:
  
-    Header files from the standard Arduino library or ones mentioned above:
+    Header files from the standard Arduino library or packages mentioned above:
         <Adafruit_BMP3XX.h> - (requires cpp)
         <Adafruit_GPS.h> - (requires cpp)
         <Adafruit_LIS3MDL.h> - IMU/gyro (requires cpp)
@@ -125,9 +125,11 @@ Throughout AURO's FSW, you will find the following external header files include
         <time.h> - (time conversion of gps data, rand seeding)
 
 #### Section 2.2.3: FSW Modules and Tasks
-Inside of `auro/auro_flight/src`, the AURO FSW is structured into several modules. The term `module` will be used to refer to the sub-directories present within the src directory. Of the modules present, some have a special significance in that they may host their own `FSW Task`. A FSW Task is a thread of execution that is designed to serve a specific functionality. Many tasks are running concurrently and competing for processor capacity. It is the job of the RTOS scheduler to determine which task has the priority and will be given the processor. More information about a FreeRTOS task (which is one in the same as an AURO FSW Task) can be found in the <a href="https://www.freertos.org/about-RTOS.html">FreeRTOS Documentation</a>. The modules that have a task running are denoted with the '_' character at the start of their directory name. This visually separates them from modules without a FSW Task and pull them to the top in most filesystem explorers.
+Inside of `auro/auro_flight/src`, the AURO FSW is structured into several modules. The term `module` will be used to refer to the sub-directories present within the src directory. Of the modules present, some have a special significance in that they may host their own `FSW Task`. A FSW Task is a thread of execution that is designed to serve a specific functionality. Many tasks are running concurrently and competing for processor capacity. It is the job of the RTOS scheduler to determine which task has the priority and will be given the processor. More information about a FreeRTOS task (which is one in the same as an AURO FSW Task) can be found in the <a href="https://www.freertos.org/about-RTOS.html">FreeRTOS Documentation</a>. The modules that have a task running are denoted with the '_' character at the start of their directory name. This visually separates them from modules without a FSW Task and pulls them to the top in most filesystem explorers.
 
-Within each FSW module, there can be various FSW source code files that makeup the functionality of that module. Files ending in `_task.c/h` contain the source code for FSW tasks and functions called by it. Files ending in `_utils.c/h` contain utilities used across multiple files in a module but not used outside the module. Files ending in `_commands.c/h` contain handler functions associated with FSW commands. These are commands that can be issued by the operator and are received, parsed, and executed by AURO. Files ending in `_client.c/h` contains functions that are designed for use both internally and externally of the home module. For example, the Fault Protection Manager or `_fpm` module includes the file `fpm_client.c` which contains the function definition for `fpm_assert`. This function can be called by any module and any task to alert the `FPM` module that a serious issue has been encountered and a reset should be activated. As was done in the previous sentence, it would be correct to refer to the Fault Protection Manager Module as `fpm`, `FPM`, `_fpm`, or any other reasonable deviation.
+
+Within each FSW module, there can be various FSW source code files that makeup the functionality of that module. Files ending in `_task.c/h` contain the source code for FSW tasks and functions called by the task itself. Files ending in `_utils.c/h` contain utilities used across multiple files in a module but not used outside the module. Files ending in `_commands.c/h` contain handler functions associated with FSW commands. These are commands that can be issued by the operator on the ground and are received, parsed, and executed by AURO. Files ending in `_client.c/h` contain functions that are designed for use both internally and externally of the given module. For example, the Fault Protection Manager or `_fpm` module includes the file `fpm_client.c` which contains the function definition for `fpm_assert`. This function can be called by any module and any task to alert the `FPM` module that a serious issue has been encountered and a reset should be activated. As was done in the previous sentence, it would be correct to refer to the Fault Protection Manager Module as `fpm`, `FPM`, `_fpm`, or any other reasonable deviation.
+
 
 At the time this documentation was generated, AURO consists of the following FSW Modules:
  - **_FPM** - Fault Protection Manager - The highest priority FSW Task that detects and responds to anomalies
@@ -146,15 +148,15 @@ At the time this documentation was generated, AURO consists of the following FSW
 #### Section 2.2.4: Interfacing with C++ Device Drivers
 While C was chosen for the primary language of the source code, some C++ files can be found for special cases that wrap C++ library code in a C interface for use by the rest of AURO. For example, the TLM module includes `tlm_spi.cpp` which wraps functions from the SD and Radio libraries in a C interface. The GNC module has a similar situation with the file `gnc_i2c.cpp`. What is also noteworthy about these two cases is that each of these tasks is the only task allowed to communicate on the specified communications bus. The GNC task is the only one allowed to use the I2C (Inter-Integrated Circuit) bus which connects the flight computer to the Accelerometer, Magnetometer, Gyroscope, Altimeter, and GPS receiver. The TLM task is the only one allowed to use the SPI (serial Peripheral Interface) which connects the flight computer to the Radio and Micro SD storage.
 
-Also in the `/auro/auro_flight/src` directory with the various FSW modules are key files in use throughout all the modules. The `define.h` file contains values established with the define macro that are used throughout AURO. The `enums.h` file contains enumerated values and relevant dictionary info used for ground processing. This file has special formatting rules in place as it is used by the Ground System as a telemetry dictionary. A pair of symlinks to this file also allows the Arduino IDE to properly Base Station and Launch Station code to properly compile referencing the same enumerated values. The `globals.h` file contains extern declarations to global variables used throughout AURO. The variables themselves are declared and defined in the wake module. The `structs.h` file contains struct definitions used through AURO.
+Also in the `/auro/auro_flight/src` directory with the various FSW modules are key files in use throughout all the modules. The `define.h` file contains values established with the define macro that are used throughout AURO. The `enums.h` file contains enumerated values and relevant dictionary info used for ground processing. This file has special formatting rules in place as it is used by the Ground System as a telemetry dictionary. A pair of symlinks to this file also allows the Arduino IDE to properly complie Base Station and Launch Station code by referencing the same enumerated values. The `globals.h` file contains extern declarations to global variables used throughout AURO. The variables themselves are declared and defined in the wake module. The `structs.h` file contains struct definitions used throughout AURO.
 
 #### Section 2.2.5: Telemetry Types
 A key set of concepts that is important to understand for this project is how telemetry is organized. In fitting with the objectives of this project, data reported from AURO will look similar to how spacecraft telemetry is structured in industry. Messages sent from AURO to the ground can be one of two types: Event Telemetry (abbreviated to ETL) and Channelized Telemetry (abbreviated to CTL). ETLs can be thought of as a comprehensive system log. In the log, there are a number of entries with a timestamp that note the occurrence of a significant event. This is very similar to the Windows Event Viewer data, to give a parallel to non-spacecraft computing. Also like the Event Viewer, ETLs are each associated with a particular level to describe the type or criticality of the information they contain. At writing, possible ETL levels are RECORD, NOTICE, COMMAND, ALERT, CRITICAL, and LAUNCH. The `enums.h` file has more information about what each level means. In contrast to events, CTLs report specific values of interest at regular intervals that might change over time. An example would be a temperature sensor value. We want to be updated on what the latest readings look like and how it changes over time, but this information isn't necessarily associated with an event.
 
 #### Section 2.2.6: Coding Conventions and Standards
-A keen observer will see several patterns emerge while reviewing the AURO source code. Some of the conventions have already been discussed, such as adding the '_' character to the start of a module name to indicate that it contains a FSW task. There are many more conventions to find that make the code easier to understand and extend. Some examples include:
+After careful study, one will see several patterns emerge while reviewing the AURO source code. Some of the conventions have already been discussed, such as adding the '_' character to the start of a module name to indicate that it contains a FSW task. There are many more conventions to find that make the code easier to understand and extend. Some examples include:
 - Variables that start with the prefix 'PROTECTED_' can only safely be changed inside a FreeRTOS critical section. This prevents a task from being interrupted while the update of a global variable has started but not completed. Reading outside of a critical section is allowed.
-- Functions that are called by the CMD module when a FSW command is dispatched is called a 'command handler' and starts with the prefix 'command_'.
+- Functions that are called by the CMD module when a FSW command is dispatched are called 'command handlers' and starts with the prefix 'command_'.
 - There are strict formatting rules in place for the `enums.h` file to allow it to be used by the Ground System as a telemetry dictionary. This includes rules like requiring ETL text to be formatted with brackets where arguments are to be included and requiring enumeration type names to end with '_ENUM'.
 
 While those AURO-specific conventions are more aesthetic in nature, external standards are also in effect to make the code more reliable and fault tolerant. In 2009, NASA's Jet Propulsion Laboratory published the <a href=https://web.archive.org/web/20111015064908/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf>JPL Institutional Coding Standard for the C Programming Language</a>. As this standard aligns nicely with the objectives for this project, it was consulted extensively to improve AURO's FSW.
@@ -177,10 +179,10 @@ The Ground Segment comprises the Base Station, Launch Station, and Ground System
 ### Section 3.1: Embedded Base Station and Launch Station Code
 Code for the Base Station can be found in `/auro/base_station/`. It is designed to be lightweight and simple since the task it performs is simple. The Base Station:
 - receives any data transmitted on the radio for relay back to the host computer so it can be displayed with the Ground System
-- sends FSW commands from the user to AURO
+- sends FSW commands from the operator to AURO
 
 Code for the Launch Station can be found in `/auro/launch_station`. Its purpose is also simple, so the code is also lightweight. The launch station:
-- listens on the radio link for one of the few FSW commands from the Base Station the requires it to act
+- listens on the radio link for one of the few FSW commands from the Base Station that requires it to act
 - takes the commanded action (namely energize a non-latching relay to complete the launch circuit and ignite the rocket motor)
 - report with LAUNCH level ETLs the launch station's actions
 
@@ -190,12 +192,12 @@ For both the Base Station and Launch Station, transmission on the radio link is 
 ### Section 3.2: Ground System (Telemetry Visualization)
 The Ground System consists of the python tkinter application that visualizes the AURO data that is being received. The main components of the interface are:
 - FSW Command Builder allow the user to build and send commands
-- Uplink History Frame to allow the user to review previously sent commands and select the for re-transmission
+- Uplink History Frame to allow the user to review previously sent commands and select them for re-transmission
 - CTL Frame to display the latest CTL values by channel
-- CTL Plot Frame to display plots for channels that are plotted
+- CTL Plot Frame to display channel plots for certain channels
 - ETL Frame to display the ETL log
 
-The Ground System is not designed to be the focus point of this project since it is not FSW code. While the Ground System should look nine and work well, it is not a good example of how to build a state-of-the-art telemetry visualization and command and control application.
+The Ground System is not designed to be the focus point of this project since it is not FSW code. While the Ground System should look nice and work well, it is not a good example of how to build a state-of-the-art telemetry visualization / command and control application.
 
 It is also important to note that the Ground System needs to be told what serial port to look for data on. It will gracefully handle both data coming from the Base Station or data coming directly from AURO if you have the AURO flight computer plugged in via USB (though note no serial data is transmitted by AURO in FLIGHT mode).
 
@@ -205,15 +207,15 @@ The ground station can be launched with a command similar to `python /auro/groun
 <br>
 
 ### Section 3.3: Telemetry Logging
-The Ground System has a button along the bottom of the window that toggles ground data recording. If activated, each message that comes off the serial bus (after it is byte-decoded) is written to the log file and stored in `/auro/recorded_ground_data/`. Each time a log file is opened, the entire contents are added at the start of the log file to allow it to be parsed by the Ground System far into the future even when the telemetry dictionary (`enums.h`) changes. A playback of a telemetry file can be accomplished by running a command such as `python /auro/ground_system/ground_system.py sample_filepath.log`.
+The Ground System has a button along the bottom of the window that toggles ground data recording. If activated, each message that comes off the serial bus (after it is byte-decoded) is written to the log file and stored in `/auro/recorded_ground_data/`. Each time a log file is opened, the entire contents of `enums.h` are added at the start of the log file to allow it to be parsed by the Ground System far into the future even when the telemetry dictionary (`enums.h`) changes. A playback of a telemetry file can be accomplished by running a command such as `python /auro/ground_system/ground_system.py sample_filepath.log`.
 
-Flight logs are generated onboard AURO when it is in flight mode. While the process to archive and play the log files is identical, it is more manual. The flight logs need to be manually pulled off the SD card and put in the `/auro/recorded_flight_data` directory. For playback to work correctly, the contents of the `enums.h` ***that was in use when the log was generated*** must be inserted into the start of the log file and saved.
+Flight logs are generated onboard AURO when it is in flight mode. While the process to play the log files is identical, archiving it is more manual. The flight logs need to be manually pulled off the SD card and put in the `/auro/recorded_flight_data` directory. For playback to work correctly, the contents of the `enums.h` ***that was in use when the log was generated*** must be inserted into the start of the log file and saved by the operator.
 <br><br>***The Ground System in log playback mode***
 <br><img src="./assets/ground_system_playback_sample.png" width="700"><br>
 <br>
 
 ### Section 3.4: Ground Segment Testing
-Section 2.3 covers many AURO-cetric testing concepts, some of which have implications for Ground Segment testing. First, because of the design of the end-to-end test framework, the Base Station and Launch Station are tested as a group at that time. The Ground System, however, does not have its own automated testing at this time. Changes to the codebase require the developer to manually verify the desired Ground System functionality by launching the telemetry viewer with the `ground_system.py` file. To make this process somewhat easier, some of the TST commands and the TEST system mode are designed to make Ground System issues easier to spot. For example, some GNC channels in TEST mode report values that change by a random amount for each channel report. Even though the altitude may not really be changing wildly, having more dynamic data on the plots can significantly aid the tester.
+Section 2.3 covers many AURO-cetric testing concepts, some of which have implications for Ground Segment testing. First, because of the design of the end-to-end test framework, the Base Station and Launch Station are tested as a group at that time. The Ground System, however, does not have its own automated testing. Changes to the codebase require the developer to manually verify the desired Ground System functionality by launching the telemetry viewer with the `ground_system.py` file. To make this process somewhat easier, some of the TST commands and the TEST system mode are designed to make Ground System issues easier to spot. For example, some GNC channels in TEST mode report values that change by a random amount for each channel report. Even though the altitude may not really be changing wildly, having more dynamic data on the plots can significantly aid the tester.
 
 
 
@@ -275,9 +277,9 @@ Section 2.3 covers many AURO-cetric testing concepts, some of which have implica
 3. Melt embedment nuts into 4 holes on the side of the Removable Avionics Bay where the board mounts
 4. Add screw standoffs to the 4 holes where the board mounts
 5. Solder a jumper from pin 12 to the reset pin on Adafruit Feather M0 Adalogger
-6. Solder jumper from pin 11/A to pin RST on Adafruit Radio FeatherWing 
-7. Solder jumper from pin 6/D to pin CS on Adafruit Radio FeatherWing 
-8. Solder jumper from pin 5/E to pin IRQ on Adafruit Radio FeatherWing 
+6. Solder jumper from pin 11/A to pin RST on Adafruit Radio FeatherWing
+7. Solder jumper from pin 6/D to pin CS on Adafruit Radio FeatherWing
+8. Solder jumper from pin 5/E to pin IRQ on Adafruit Radio FeatherWing
 9. Solder the spring antenna into the antenna hole on the Adafruit Feather M0 Adalogger
 10. Solder Female Header Set to Adafruit Feather M0 Adalogger with black connector on the top side of the board
 11. Solder Stacking Header to Adafruit Radio FeatherWing with black connector on the top side of the board
@@ -291,7 +293,7 @@ Section 2.3 covers many AURO-cetric testing concepts, some of which have implica
 19. Use the two STEMMA QT cables to connect the IMU and GPS and the GPS and BMP
 20. Thread the battery cable through the opening, place the battery in the appropriate position, and attach the battery enclosure with screws
 21. As desired, finish assembly by plugging in the battery, adding the SD card, and connecting the Removable and Fixed Avionics Bays
-<br><br>***The Integrated AURO system***
+<br><br>***The integrated AURO system***
 <br><img src="./assets/AURO_complete.jpg" width="350">&nbsp;&nbsp;<img src="./assets/AURO_partially_disassembled.jpg" width="350"><br>
 <br>
 
@@ -303,7 +305,7 @@ Section 2.3 covers many AURO-cetric testing concepts, some of which have implica
 5. Mount the LoRa Antenna to the hole in the Base Station top
 6. Connect the Lora Antenna cable to the uFL connector that was previously soldered
 7. Mount the top of the Base Station to the base using M2.5 screws
-<br><br>***The Integrated Base Station***
+<br><br>***The integrated Base Station***
 <br><img src="./assets/base_station_complete.jpg" width="350">&nbsp;&nbsp;<img src="./assets/base_station_partially_disassembled.jpg" width="350"><br>
 <br>
 
@@ -314,7 +316,7 @@ Section 2.3 covers many AURO-cetric testing concepts, some of which have implica
 4. Mount the LoRa Antenna to the remaining hole in the antenna top
 5. Solder uFL SMT connector to appropriate pad on the Adafruit Feather 32u4 RFM69HCW
 6. Solder the Female Header Set to the Adafruit Feather 32u4 RFM69HCW with the black connector portion facing the top of the board
-7. Solder the Male Header Set to the Adafruit Non-Latching Mini Relay FeatherWing so that the longer portion of the pin faces teh bottom of the board
+7. Solder the Male Header Set to the Adafruit Non-Latching Mini Relay FeatherWing so that the longer portion of the pin faces the bottom of the board
 8. Connect the Adafruit Feather 32u4 RFM69HCW and Adafruit Non-Latching Mini Relay FeatherWing using the pins soldered
 9. Cut and splice the JST-PH Battery Extension Cable - 500mm and the Lithium Ion Polymer Battery so that red wire can be run through the green toggle switch
 10. Attach the wiring, battery, green switch, and Adafruit Feather 32u4 RFM69HCW such that the board is only powered when the green toggle is flipped up and lighted
@@ -324,7 +326,7 @@ Section 2.3 covers many AURO-cetric testing concepts, some of which have implica
 14. Mount the boards to the Launch Station using the standoffs and M2.5 screws
 15. Place the Lithium Ion Polymer Battery and 9V battery in the appropriate compartments
 16. Mount the top of the Launch Station to the base using M2.5 screws
-<br><br>***The Integrated Launch Station***
+<br><br>***The integrated Launch Station***
 <br><img src="./assets/launch_station_complete.jpg" width="350">&nbsp;&nbsp;<img src="./assets/launch_station_partially_disassembled.jpg" width="350"><br>
 <br>
 
@@ -333,4 +335,12 @@ Section 2.3 covers many AURO-cetric testing concepts, some of which have implica
 ## Section 5: Operations
 When everything is integrated, AURO, the Base Station, and the Launch Station can be connected via USB to the development machine to compile and flash the image to the boards using the Arduino IDE. If changes were made to AURO code, the new FSW image must be exported to binaries in the Arduino IDE using the toolbar menu `Sketch->Export Compiled Binary` feature.
 
-Next, the Ground System can be launched with the terminal command `python /auro/ground_system/ground_system.py`. Look at telemetry streaming in from AURO and send FSW commands to prepare it for its journey skyward. Remember, a fully assembled Mission System isn't necessary to get a feel for the action as log files can be replayed in the Ground System with a terminal command `python /auro/ground_system/ground_system.py sample_filepath.log`.
+Next, the Ground System can be launched with the terminal command `python /auro/ground_system/ground_system.py`. Look at telemetry streaming in from AURO and send FSW commands to prepare it for its journey skyward. Remember, a fully assembled Mission System isn't necessary to get a feel for the action as log files can be replayed in the Ground System with a terminal command such as `python /auro/ground_system/ground_system.py sample_filepath.log`.
+
+
+
+<div >
+    <img src="./assets/AURO_logo.svg" align="left" height="100">
+    <br><br><br>
+    <h1 align='bottom'>&nbsp;&nbsp;AURO: Flight Software</h1>
+</div>
