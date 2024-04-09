@@ -333,3 +333,9 @@ Section 2.3 covers many AURO-cetric testing concepts, some of which have implica
 When everything is integrated, AURO, the Base Station, and the Launch Station can be connected via USB to the development machine to compile and flash the image to the boards using the Arduino IDE. If changes were made to AURO code, the new FSW image must be exported to binaries in the Arduino IDE using the toolbar menu `Sketch->Export Compiled Binary` feature.
 
 Next, the Ground System can be launched with the terminal command `python /auro/ground_system/ground_system.py`. Look at telemetry streaming in from AURO and send FSW commands to prepare it for its journey skyward. Remember, a fully assembled Mission System isn't necessary to get a feel for the action as log files can be replayed in the Ground System with a terminal command such as `python /auro/ground_system/ground_system.py sample_filepath.log`.
+
+<br><br>***AURO demo video***
+<br>
+https://github.com/laboratory10/auro_overview/assets/29221389/83ea3792-05bc-4245-8e51-c3f5cbdf6d9a
+<br>
+
